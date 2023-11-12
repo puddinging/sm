@@ -70,6 +70,7 @@ var addCmd = &cobra.Command{
 		serverList = append(serverList, server)
 		config.ServerList = serverList
 		utils.WriteConfig(config, configPath)
+		fmt.Printf("the current server information has been added, ip: %s, username: %s, password: %s.\n", ip, username, password)
 		return nil
 	},
 }

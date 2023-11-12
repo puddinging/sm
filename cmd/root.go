@@ -7,6 +7,8 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"sm/model"
+	"sm/utils"
 
 	"github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
@@ -57,16 +59,10 @@ func init() {
 	if err != nil {
 		if os.IsNotExist(err) {
 			fmt.Println("文件不存在，正在创建：", configPath)
-
-			// 创建文件
-			file, err := os.Create(configPath)
-			if err != nil {
-				fmt.Println("无法创建文件：", err)
-				return
+			config := model.Config{
+				ServerList: []model.Server{},
 			}
-			defer file.Close()
-
-			fmt.Println("文件创建成功！")
+			utils.WriteConfig(config, configPath)
 		} else {
 			fmt.Println("无法访问文件：", err)
 		}

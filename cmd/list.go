@@ -11,17 +11,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-type ServerList struct {
-	Alias    string `json:"alias"`
-	IP       string `json:"ip"`
-	Username string `json:"username"`
-	Password string `json:"password"`
-}
-
-type Config struct {
-	Servers []ServerList `json:"serverList"`
-}
-
 // listCmd represents the list command
 var listCmd = &cobra.Command{
 	Use:   "list",

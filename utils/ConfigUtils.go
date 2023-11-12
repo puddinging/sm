@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/fs"
 	"os"
 	"sm/model"
 )
@@ -39,13 +38,15 @@ func FindConfigByAlias(configPath string, aliasInput string) (model.Server, erro
 	return serverResult, errors.New("no matching server found")
 }
 
-func WriteConfig(config interface{}, filePath string) error {
+func WriteConfig(config model.Config, filePath string) error {
 	configJSON, err := json.MarshalIndent(config, "", "  ")
+	fmt.Printf("%s \n", configJSON)
+
 	if err != nil {
 		return errors.New("unable to parse JSON")
 	}
 
-	err = os.WriteFile(filePath, configJSON, fs.FileMode(0644))
+	err = os.WriteFile(filePath, configJSON, os.ModePerm)
 	if err != nil {
 		return errors.New("unable to write configuration file")
 	}
