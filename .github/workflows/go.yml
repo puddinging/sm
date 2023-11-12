@@ -1,0 +1,36 @@
+name: Release
+on:
+  create:
+    tags:
+    - v*
+
+jobs:
+  release:
+    name: Release on GitHub
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v1
+
+    - name: Validates GO releaser config
+      uses: docker://goreleaser/goreleaser:latest
+      with:
+        args: check
+
+    - name: Create release on GitHub (Linux and macOS)
+      uses: docker://goreleaser/goreleaser:latest
+      with:
+        args: release
+      env:
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+    - name: Build Windows executable
+      run: |
+        GOOS=windows go build -o sm.exe
+      shell: bash
+
+    - name: Upload Windows executable
+      uses: actions/upload-artifact@v2
+      with:
+        name: windows
+        path: sm.exe
