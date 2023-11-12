@@ -103,3 +103,37 @@ func (s *Server) Connect() error {
 
 	return nil
 }
+
+func (s *Server) UploadFile(localPath, remotePath string) error {
+	cmd := exec.Command("sshpass", "-p", s.Password, "ssh", "-o", "StrictHostKeyChecking=no", fmt.Sprintf("%s@%s", s.Username, s.IP), "cat > "+remotePath)
+
+	stdin, err := cmd.StdinPipe()
+	if err != nil {
+		return fmt.Errorf("error getting stdin pipe: %v", err)
+	}
+	defer stdin.Close()
+
+	err = cmd.Start()
+	if err != nil {
+		return fmt.Errorf("error starting command: %v", err)
+	}
+
+	file, err := os.Open(localPath)
+	if err != nil {
+		return fmt.Errorf("error opening local file: %v", err)
+	}
+	defer file.Close()
+
+	_, err = io.Copy(stdin, file)
+	if err != nil {
+		return fmt.Errorf("error copying file content: %v", err)
+	}
+
+	err = cmd.Wait()
+	if err != nil {
+		return fmt.Errorf("error waiting for command: %v", err)
+	}
+
+	fmt.Println("File uploaded successfully!")
+	return nil
+}

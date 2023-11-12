@@ -32,7 +32,7 @@ var openCmd = &cobra.Command{
 			server.Connect()
 			return nil
 		} else {
-			return errors.New("未找到匹配的服务器信息")
+			return errors.New("no matching server found")
 		}
 	},
 }
