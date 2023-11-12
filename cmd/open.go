@@ -24,7 +24,7 @@ func init() {
 // openCmd represents the open command
 var openCmd = &cobra.Command{
 	Use:   "open",
-	Short: "Connect to the specified server",
+	Short: "open an ssh connection session via alias in the current console",
 	Long:  ``,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		server, err := utils.FindConfigByAlias(configPath, alias)

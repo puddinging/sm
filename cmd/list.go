@@ -25,7 +25,7 @@ type Config struct {
 // listCmd represents the list command
 var listCmd = &cobra.Command{
 	Use:   "list",
-	Short: "Print all stored server information",
+	Short: "list all currently existing server information",
 	Long:  ``,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		fmt.Printf("list filePath %s \n", configPath)

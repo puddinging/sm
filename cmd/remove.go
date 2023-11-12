@@ -18,7 +18,7 @@ var (
 // removeCmd represents the remove command
 var removeCmd = &cobra.Command{
 	Use:   "remove",
-	Short: "remove a server infomation",
+	Short: "remove a server information by alias",
 	Long:  ``,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		if alilsName == "" {
