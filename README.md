@@ -33,6 +33,10 @@ sm open -a local
 ```
 sm add -a local -i 192.168.0.1 -u jiefeng -p welcome1
 ```
+4. `remove` 命令，移除一个已存在的服务器连接信息
+```
+sm remove -a local
+```
 ## 注意
 1. `Linux/macos` 需安装 `sshpass` 工具
 2. `Windows` 需安装 `PuTTY/KiTTY` 工具
