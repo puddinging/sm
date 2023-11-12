@@ -29,9 +29,16 @@ var listCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Printf("list filePath %s \n", configPath)
 		config := utils.GetConfig(configPath)
+		// 计算 Alias 字段的最大宽度
+		maxAliasWidth := 0
 		for _, server := range config.ServerList {
-			fmt.Printf("Alias: %-10s IP: %-15s\n", server.Alias, server.IP)
-			fmt.Println("--------------")
+			if len(server.Alias) > maxAliasWidth {
+				maxAliasWidth = len(server.Alias)
+			}
+		}
+		for _, server := range config.ServerList {
+			fmt.Printf("Alias: %- *s\tIP: %-15s\n", maxAliasWidth, server.Alias, server.IP)
+			fmt.Println("-----------------------------------------------")
 		}
 	},
 }
