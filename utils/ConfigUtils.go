@@ -40,7 +40,6 @@ func FindConfigByAlias(configPath string, aliasInput string) (model.Server, erro
 
 func WriteConfig(config model.Config, filePath string) error {
 	configJSON, err := json.MarshalIndent(config, "", "  ")
-	fmt.Printf("%s \n", configJSON)
 
 	if err != nil {
 		return errors.New("unable to parse JSON")
