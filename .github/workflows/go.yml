@@ -17,20 +17,9 @@ jobs:
       with:
         args: check
 
-    - name: Create release on GitHub (Linux and macOS)
+    - name: Create release on GitHub
       uses: docker://goreleaser/goreleaser:latest
       with:
         args: release
       env:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-
-    - name: Build Windows executable
-      run: |
-        GOOS=windows go build -o sm.exe
-      shell: bash
-
-    - name: Upload Windows executable
-      uses: actions/upload-artifact@v2
-      with:
-        name: windows
-        path: sm.exe
