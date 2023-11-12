@@ -30,7 +30,7 @@ var removeCmd = &cobra.Command{
 		}
 		for i, server := range config.ServerList {
 			if server.Alias == alilsName {
-				fmt.Printf("The server will be deleted: %s", server.Alias)
+				fmt.Printf("The server will be deleted: %s \n", server.Alias)
 				config.ServerList = append(config.ServerList[:i], config.ServerList[i+1:]...)
 			}
 		}
