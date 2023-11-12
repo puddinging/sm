@@ -35,8 +35,8 @@ var uploadCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(uploadCmd)
-	uploadCmd.Flags().StringVarP(&toUploadAlias, "alias", "a", "", "alias")
-	uploadCmd.Flags().StringVarP(&localFilePath, "localFilePath", "l", "", "alias")
-	uploadCmd.Flags().StringVarP(&remoteFilePath, "remoteFilePath", "r", "", "alias")
+	// rootCmd.AddCommand(uploadCmd)
+	// uploadCmd.Flags().StringVarP(&toUploadAlias, "alias", "a", "", "alias")
+	// uploadCmd.Flags().StringVarP(&localFilePath, "localFilePath", "l", "", "alias")
+	// uploadCmd.Flags().StringVarP(&remoteFilePath, "remoteFilePath", "r", "", "alias")
 }
