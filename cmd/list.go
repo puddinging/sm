@@ -4,6 +4,7 @@ Copyright © 2023 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"sm/utils"
 
@@ -26,9 +27,12 @@ var listCmd = &cobra.Command{
 	Use:   "list",
 	Short: "Print all stored server information",
 	Long:  ``,
-	Run: func(cmd *cobra.Command, args []string) {
+	RunE: func(cmd *cobra.Command, args []string) error {
 		fmt.Printf("list filePath %s \n", configPath)
-		config := utils.GetConfig(configPath)
+		config, err := utils.GetConfig(configPath)
+		if err != nil {
+			return errors.New("配置文件未找到")
+		}
 		// 计算 Alias 字段的最大宽度
 		maxAliasWidth := 0
 		for _, server := range config.ServerList {
@@ -40,6 +44,7 @@ var listCmd = &cobra.Command{
 			fmt.Printf("Alias: %- *s\tIP: %-15s\n", maxAliasWidth, server.Alias, server.IP)
 			fmt.Println("-----------------------------------------------")
 		}
+		return nil
 	},
 }
 

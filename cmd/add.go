@@ -4,6 +4,7 @@ Copyright © 2023 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"sm/model"
 	"sm/utils"
@@ -37,9 +38,11 @@ This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	// DisableFlagParsing: true,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		var err error
 		fmt.Printf("add commond ip: %s, username: %s, password: %s.\n", ip, username, password)
-		config := utils.GetConfig(configPath)
+		config, err := utils.GetConfig(configPath)
+		if err != nil {
+			return errors.New("配置文件未找到")
+		}
 		server := model.Server{
 			Alias:    alias,
 			IP:       ip,
@@ -48,6 +51,6 @@ to quickly create a Cobra application.`,
 		}
 		serverList := config.ServerList
 		serverList = append(serverList, server)
-		return err
+		return nil
 	},
 }
