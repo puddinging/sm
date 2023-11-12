@@ -4,14 +4,10 @@ Copyright © 2023 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 	"sm/model"
 	"sm/utils"
-
-	"io/fs"
-	"os"
 
 	"github.com/spf13/cobra"
 )
@@ -37,10 +33,26 @@ var addCmd = &cobra.Command{
 	Long:  ``,
 	// DisableFlagParsing: true,
 	RunE: func(cmd *cobra.Command, args []string) error {
+		if alias == "" {
+			return errors.New("the flag alias cannot be empty")
+		}
+
+		if ip == "" {
+			return errors.New("the flag ip cannot be empty")
+		}
+
+		if username == "" {
+			return errors.New("the username ip cannot be empty")
+		}
+
+		if password == "" {
+			return errors.New("the flag password cannot be empty")
+		}
+
 		fmt.Printf("add commond ip: %s, username: %s, password: %s.\n", ip, username, password)
 		config, err := utils.GetConfig(configPath)
 		if err != nil {
-			return errors.New("配置文件未找到")
+			return errors.New("configuration file not found")
 		}
 		server := model.Server{
 			Alias:    alias,
@@ -49,23 +61,15 @@ var addCmd = &cobra.Command{
 			Password: password,
 		}
 		serverList := config.ServerList
+		for _, server := range serverList {
+			if server.Alias == alias {
+				errMsg := fmt.Sprintf("the alias [%s] already exists", alias)
+				return errors.New(errMsg)
+			}
+		}
 		serverList = append(serverList, server)
 		config.ServerList = serverList
-		WriteConfig(serverList, configPath)
+		utils.WriteConfig(config, configPath)
 		return nil
 	},
-}
-
-func WriteConfig(config interface{}, filePath string) error {
-	configJSON, err := json.MarshalIndent(config, "", "  ")
-	if err != nil {
-		return errors.New("无法序列化配置为 JSON 格式")
-	}
-
-	err = os.WriteFile(filePath, configJSON, fs.FileMode(0644))
-	if err != nil {
-		return errors.New("无法写入配置文件")
-	}
-
-	return nil
 }
