@@ -37,6 +37,16 @@ sm add -a local -i 192.168.0.1 -u jiefeng -p welcome1
 ```
 sm remove -a local
 ```
+
+## 编译
+```
+go build
+```
+## 安装
+1. 从源码安装
+```
+go install
+```
 ## 注意
 1. `Linux/macos` 需安装 `sshpass` 工具
 2. `Windows` 需安装 `PuTTY/KiTTY` 工具
