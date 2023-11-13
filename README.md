@@ -49,4 +49,4 @@ go install
 ```
 ## 注意
 1. `Linux/macos` 需安装 `sshpass` 工具
-2. `Windows` 需安装 `PuTTY/KiTTY` 工具
+2. `Windows` 需安装 `PuTTY` 工具
