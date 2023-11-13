@@ -26,13 +26,19 @@ func (s *Server) Connect() error {
 	var cmd *exec.Cmd
 
 	if runtime.GOOS == "windows" {
+
+		// 先手动确认一下连接
+		err := manualConfirmHostKey(s.Username, s.IP, s.Password)
+		if err != nil {
+			return err
+		}
 		// 如果是Windows系统，使用plink代替ssh
 		cmd = exec.Command("plink",
 			fmt.Sprintf("%s@%s", s.Username, s.IP),
 			"-P", "22", // 指定SSH端口
 			"-pw", s.Password,
 			"-batch", // 禁用交互模式，确保不会出现任何提示
-			"-o", "TCPKeepAlive=yes",
+			// "-o", "TCPKeepAlive=yes",
 		)
 	} else {
 		// 如果不是Windows系统，直接使用sshpass和ssh命令
@@ -136,4 +142,21 @@ func (s *Server) UploadFile(localPath, remotePath string) error {
 
 	fmt.Println("File uploaded successfully!")
 	return nil
+}
+
+// 在连接服务器之前手动确认主机密钥
+func manualConfirmHostKey(username, ip, password string) error {
+	cmd := exec.Command("plink",
+		fmt.Sprintf("%s@%s", username, ip),
+		"-P", "22", // 指定SSH端口
+		"-pw", password,
+		// "-batch", // 禁用交互模式，确保不会出现任何提示
+		// "-o", "TCPKeepAlive=yes",
+	)
+
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	cmd.Stdin = os.Stdin
+
+	return cmd.Run()
 }
